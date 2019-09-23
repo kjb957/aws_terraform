@@ -14,10 +14,10 @@ def slow_process_to_calculate_availability(provider, name):
 def hardware():
     
     #return jsonify([{'provider': 'NA', 'name': 'NA', 'availability': 'NA'}])
-    return jsonify([{"availability":"MEDIUM","name":"c5","provider":"Amazing"},{"availability":"LOW","name":"H16mr","provider":"Azure"}])
-    con = sql.connect(host="localhost", 
-        user="mysql-user", passwd="sc00t5r",
-        database="hardwaredb")
+    #return jsonify([{"availability":"MEDIUM","name":"c5","provider":"Amazing"},{"availability":"LOW","name":"H16mr","provider":"Azure"}])
+    con = sql.connect(host="terraform-20190923125030142600000001.cyjqkacibnoo.us-east-1.rds.amazonaws.com", 
+        user="admin", passwd="My_db_Password",
+        database="hardwareavailability")
 
     c = con.cursor()
     c.execute('SELECT * from hardware')
