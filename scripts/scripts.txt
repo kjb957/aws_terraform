@@ -1,11 +1,15 @@
 # Jumpbox pem
 
-
-scp -i my_default_key_pair.pem my_default_key_pair.pem  ec2-user@34.230.85.170:
+#! /bin/bash
+scp -i my_default_key_pair.pem my_default_key_pair.pem  ec2-user@$1:
   
-ssh -i my_default_key_pair.pem ec2-user@34.230.85.170
+ssh -i my_default_key_pair.pem ec2-user@$1
 
 
 RDS - hardwareavailability
-admin
-MydbPassword
+admin / My_db_Password
+
+# Connect
+mysql -h <host_name> -P 3306 -u <db_master_user> -p
+# Create tables and load data
+mysql -u <db_master_user> -p hardwareavailability < database_create.sql
