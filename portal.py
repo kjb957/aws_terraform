@@ -18,7 +18,7 @@ def dashboard():
 
 @application.route('/test/')
 def test():
-	return f'{version} OK  from {socket.gethostname()}'
+	return version + 'OK  from ' + socket.gethostname()
 
 if __name__ == "__main__":
     application.run(host='0.0.0.0', port=5000)
