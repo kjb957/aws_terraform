@@ -13,3 +13,10 @@ admin / My_db_Password
 mysql -h <host_name> -P 3306 -u <db_master_user> -p
 # Create tables and load data
 mysql -u <db_master_user> -p hardwareavailability < database_create.sql
+
+
+# aws cli
+
+aws autoscaling set-desired-capacity --auto-scaling-group-name portal_auto_scale_group --desired-capacity 2 --honor-cooldown
+
+aws autoscaling set-desired-capacity --auto-scaling-group-name portal_auto_scale_group --desired-capacity 1 --honor-cooldown
