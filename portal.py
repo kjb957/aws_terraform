@@ -9,7 +9,7 @@ def dashboard():
 
     result = requests.get('http://192.168.21.20:5001/hardware/').json()
     hardware = [
-        '{} - {}: {}'.format(r['provider'], r['name'], r['availability'])
+        '{} - {} - {}: {}'.format('v1.1 - ' + socket.gethostname() + ' - ', r['provider'], r['name'], r['availability'])
         for r in result
     ]
 
