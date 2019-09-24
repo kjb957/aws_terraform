@@ -3,21 +3,22 @@ import requests
 import socket
 application = Flask(__name__)
 
+version = 'v 1.1 '
 
 @application.route('/')
 def dashboard():
 
     result = requests.get('http://192.168.21.20:5001/hardware/').json()
     hardware = [
-        '{} - {} - {}: {}'.format('v1.1 - ' + socket.gethostname() + ' - ', r['provider'], r['name'], r['availability'])
+        '{} - {}: {}'.format(r['provider'], r['name'], r['availability'])
         for r in result
     ]
 
-    return '<br>'.join(hardware)
+    return version + socket.gethostname() + '<br>' + '<br>'.join(hardware)
 
 @application.route('/test/')
 def test():
-	return 'OK  (V1) from ' + socket.gethostname()
+	return f'{version} OK  from {socket.gethostname()}'
 
 if __name__ == "__main__":
     application.run(host='0.0.0.0', port=5000)
