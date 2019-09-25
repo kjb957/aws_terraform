@@ -74,6 +74,7 @@ Group 1
   * Deploys the Jumpbox and it's security group
 * RDS_MySQL.tf
   * Deploys the MySQL DB including it's security group
+  
 Group 2
 * nat_gw.tf
   * Deploys the NAT GW and routes for the Private subnets
