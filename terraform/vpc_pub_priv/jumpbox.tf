@@ -1,7 +1,7 @@
 
 
 resource "aws_security_group" "public_jumbox" {
-  name        = "allow_web_ssh"
+  name        = "allow_ssh"
   description = "Allow ssh inbound traffic"
   vpc_id      = "${aws_vpc.infrastructure_vpc.id}"
 
@@ -35,7 +35,7 @@ resource "aws_instance" "jumpbox" {
   key_name = "my_default_key_pair"
   vpc_security_group_ids = ["${aws_security_group.public_jumbox.id}"]
   subnet_id = "${aws_subnet.public_subnet_1.id}"
-  #user_data = "${file("provision_jumbox.sh")}"
+  user_data = "${file("provision_jumpbox.sh")}"
  
   tags = {
     Name = "Jumpbox"
