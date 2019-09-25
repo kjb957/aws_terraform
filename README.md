@@ -24,7 +24,7 @@ Included are Terraform files that are used to provision the sample app consistin
 * The portal app once fronted by a LB could be hosted in a private network.
 * In Security Groups could define source as being other security group object.  Currently using VPC subnet.
 * Scaling Policy bug within Terraform for setting ALBRequestCountPerTarget.
-* Use Elasticache for solving slow hardware response time.
+* Use Elasticache for solving slow hardware response time, see example of using Redis as a cache below.
 * A /test/ route was added to the portal app for manual testing and also as a keep alive health check for the LB.
 * A similar route can be added to the hardware app that will send a response for a keep alive health check if fronted by an LB.
 
@@ -92,6 +92,26 @@ The following terraform configuration objects exist but are not needed as part o
 * ec2_apps.tf
   * Deploys the portal and hardware app as single instances and not as part of an Auto Scale Group
 
+#### Auto Scaling Group Based on Incoming Requests
+The scaling policy is configured with ALBRequestCountPerTarget which will track the requests sent to the portal app.
 
+#### Redis Cache Example
+Create an AWS Redis Cluster and then amend the hardware code as follows with the cache decorator
+
+```
+# Requires pip install python-redis-cache
+
+from redis import StrictRedis
+from redis_cache import RedisCache
+
+client = StrictRedis(host="redis_FQDN", decode_responses=True)
+cache = RedisCache(redis_client=client)
+RedisCache.cache(ttl=60, limit=None, namespace=None)
+
+@cache.cache()
+def slow_process_to_calculate_availability(provider, name):
+    time.sleep(5)
+    return random.choice(['HIGH', 'MEDIUM', 'LOW'])
+```
 
 
