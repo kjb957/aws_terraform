@@ -6,7 +6,7 @@ application = Flask(__name__)
 
 
 def slow_process_to_calculate_availability(provider, name):
-    time.sleep(0.1)
+    time.sleep(5)
     return random.choice(['HIGH', 'MEDIUM', 'LOW'])
 
 
