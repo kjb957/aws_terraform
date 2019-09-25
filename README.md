@@ -2,6 +2,7 @@
 
 ## Summary
 Included are Terraform files that are used to provision the sample app consisting of Portal and Hardware .py in AWS.  The app connects to an RDS MySQL DB and is fronted by a loadbalancer. The front end portal app is hosted in a Public subnet whilst the Harware app and the DB are hosted in a Private network. The apps run on ec2 instances. There are two each of the Public and Private subnets in two different availability zones.
+
 ### System Components
 * Application Load Balancer - Front end for external web traffic
 * Auto Scaling Group - Used for scaling the Portal app accross both availability zones.
@@ -19,8 +20,12 @@ Included are Terraform files that are used to provision the sample app consistin
 ### Notes
 * Terraform files are harcoded and would benefit from refactoring to be reusable.
 * Database is a single instance
-* Hardware app is a single instance but could also in practice be part of a Auto Scaling Group and be fronted with an internal LB.  This was omitted for this exercise.
+* Hardware app is a single instance but could also in practice be part of a Auto Scaling Group and be fronted with an internal LB.  This was omitted for this exercise since it would be the same setup as for Portal.
 * The portal app once fronted by a LB could be hosted in a private network.
+* Scaling Policy bug for setting ALBRequestCountPerTarget.
+* Use Elasticache for solving slow hardware response time.
+* A /test/ route was added to the portal app for manual testing and also as a keep alive health check for the LB.
+* A similar route can be added to the hardware app that will send a response for a keep alive health check if fronted by an LB.
 
 ### Software Installation
 * Each ec2 instance installs and runs software as part of a user data script.  These are the provision_\*.sh scripts. The repo containing the app code is pulled from GitHub.
@@ -33,7 +38,8 @@ aws autoscaling set-desired-capacity --auto-scaling-group-name portal_auto_scale
 ```
 
 #### Creating the environment
-The environment is deployed with Terraform.  The commands to run are as follows.  The commands are run from the directory containing the .tf files.
+The environment is deployed with Terraform.  The commands to run are as follows.  The commands are run from the directory containing the .tf files.  Copy the required files to the directory where you will run Terraform from.  You can copy Group 1 first and run plan / apply and then add Group 2 and run plan / apply.
+
 * terraform init          # This will download the plugins for AWS.
 * terraform plan          # This will show what will happen
 * terraform apply         # This will create the objects in AWS
@@ -59,26 +65,30 @@ mysql -u <db_master_user> -p hardwareavailability < database_create.sql
 ```
 
 #### Terraform Files
-
+Group 1
 * network_example.tf
+  * Deploys the VPC, Public & Private Subnets, Internet Gateway and Routes
 * security_groups.tf
+  * Deploys Public, Private Security Groups
 * jumpbox.tf
+  * Deploys the Jumpbox and it's security group
 * RDS_MySQL.tf
-
+  * Deploys the MySQL DB including it's security group
+Group 2
 * nat_gw.tf
+  * Deploys the NAT GW and routes for the Private subnets
 * ec2_apps_hardware.tf
+  * Deploys the hardware app as a single instance and not as part of an Auto Scale Group
 * asg_alb_7.tf
+  * Application LoadBalancer Setup
 
-The following terraform configuration objects exist but are not needed
+The following terraform configuration objects exist but are not needed as part of the main deploy
 * asg_elb_4.tf
-
-...Classic loadbalancer setup instead of Application Loadbalancer
+  * Classic loadbalancer setup instead of Application Loadbalancer
 * ec2_apps_portal.tf
-
-...Deploys the portal app as a single instance and not as part of an Auto Scale Group
+  * Deploys the portal app as a single instance and not as part of an Auto Scale Group
 * ec2_apps.tf
-
-...Deploys the portal and hardware app as single instances and not as part of an Auto Scale Group
+  * Deploys the portal and hardware app as single instances and not as part of an Auto Scale Group
 
 
 
