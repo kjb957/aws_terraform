@@ -6,7 +6,7 @@ Included are Terraform files that are used to provision the sample app consistin
 ### System Components
 * Application Load Balancer - Front end for external web traffic
 * Auto Scaling Group - Used for scaling the Portal app accross both availability zones.
-* Portal App - Displays a dashboard with results from a query to the hardware app api
+* Portal App - Returns a dashboard with results from a query to the hardware app api
 * Hardware App - Receives queries from the portal app and returns query results from the DB
 * MySQL Database - Hosts data retrieved by the hardware app
 * Jumpbox - Allows access from the Public network
@@ -22,7 +22,8 @@ Included are Terraform files that are used to provision the sample app consistin
 * Database is a single instance
 * Hardware app is a single instance but could also in practice be part of a Auto Scaling Group and be fronted with an internal LB.  This was omitted for this exercise since it would be the same setup as for Portal.
 * The portal app once fronted by a LB could be hosted in a private network.
-* Scaling Policy bug for setting ALBRequestCountPerTarget.
+* In Security Groups could define source as being other security group object.  Currently using VPC subnet.
+* Scaling Policy bug within Terraform for setting ALBRequestCountPerTarget.
 * Use Elasticache for solving slow hardware response time.
 * A /test/ route was added to the portal app for manual testing and also as a keep alive health check for the LB.
 * A similar route can be added to the hardware app that will send a response for a keep alive health check if fronted by an LB.
@@ -71,9 +72,9 @@ Group 1
 * security_groups.tf
   * Deploys Public, Private Security Groups
 * jumpbox.tf
-  * Deploys the Jumpbox and it's security group
+  * Deploys the Jumpbox and its security group
 * RDS_MySQL.tf
-  * Deploys the MySQL DB including it's security group
+  * Deploys the MySQL DB including its security group
   
 Group 2
 * nat_gw.tf
@@ -81,7 +82,7 @@ Group 2
 * ec2_apps_hardware.tf
   * Deploys the hardware app as a single instance and not as part of an Auto Scale Group
 * asg_alb_7.tf
-  * Application LoadBalancer Setup
+  * Application LoadBalancer & Auto Scaling Group Setup
 
 The following terraform configuration objects exist but are not needed as part of the main deploy
 * asg_elb_4.tf
