@@ -57,7 +57,7 @@ scp -i my_default_key_pair.pem my_default_key_pair.pem  ec2-user@$1:
 ssh -i my_default_key_pair.pem ec2-user@$1
 ```
 #### Setting up the MySQL DB
-Once the DB is created you can access it via the following, where 'hardwareavailability' is the database created during the AWS creation process. The SQL script creates the table and then inserts records to the DB.  At the SQL prompt these commands can be run manually also.  The DB URL is obtained from the AWS console once created.  The database parameters for user, password and host url were copied to the hardware.py script.  The harware should be deployed after the DB is setup otherwise with these changes to the app it will need to be redeployed.
+Once the DB is created you can access it via the following, where 'hardwareavailability' is the database created during the AWS creation process. The SQL script creates the table and then inserts records to the DB.  At the SQL prompt these commands can be run manually also.  The DB URL is obtained from the AWS console once created.  The database parameters for user, password and host url were copied to the hardware.py script.  The harware should be deployed after the DB is setup otherwise with these changes to the app it will need to be redeployed.  Alternatively setup an alias using a CNAME record in Amazon Route 53 for the FQDN of the DB if you have a domain name.
 ```
 # Connect
 mysql -h <host_name> -P 3306 -u <db_master_user> -p
