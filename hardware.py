@@ -2,9 +2,26 @@ from flask import Flask, request, jsonify
 import mysql.connector as sql
 import time
 import random
+#import functools
 application = Flask(__name__)
 
+# Use in Python 3
+#@functools.lru_cache(maxsize=128)
 
+# Use the following in Python 2.7
+def memoize(func):
+    cache = dict()
+
+    def memoized_func(*args):
+        if args in cache:
+            return cache[args]
+        result = func(*args)
+        cache[args] = result
+        return result
+
+    return memoized_func
+
+@memoize
 def slow_process_to_calculate_availability(provider, name):
     time.sleep(5)
     return random.choice(['HIGH', 'MEDIUM', 'LOW'])
