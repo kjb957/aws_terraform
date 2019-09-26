@@ -95,6 +95,16 @@ The following terraform configuration objects exist but are not needed as part o
 #### Auto Scaling Group Based on Incoming Requests
 The scaling policy is configured with ALBRequestCountPerTarget which will track the requests sent to the portal app.
 
+#### Cache Locally
+To improve CPU bound function
+```
+import functools
+@functools.lru_cache(maxsize=128)
+def slow_process_to_calculate_availability(provider, name):
+    time.sleep(5)
+    return random.choice(['HIGH', 'MEDIUM', 'LOW'])
+```
+
 #### Redis Cache Example
 Create an AWS Redis Cluster and then amend the hardware code as follows with the cache decorator
 
