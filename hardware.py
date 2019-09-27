@@ -9,19 +9,20 @@ application = Flask(__name__)
 #@functools.lru_cache(maxsize=128)
 
 # Use the following in Python 2.7
-def memoize(func):
-    cache = dict()
+def cache_ttl(ttl=0):
+    def memoize_ttl_decorator(func):
+        cache = dict()
+        def memoized_func(*args):
+            dt_now = datetime.now()
+            if args in cache and cache[args][1] > dt_now:
+                return cache[args][0]
+            result = func(*args)
+            cache[args] = [result, dt_now + timedelta(seconds=ttl)]
+            return result
+        return memoized_func
+    return memoize_ttl_decorator
 
-    def memoized_func(*args):
-        if args in cache:
-            return cache[args]
-        result = func(*args)
-        cache[args] = result
-        return result
-
-    return memoized_func
-
-@memoize
+@cache_ttl(30)
 def slow_process_to_calculate_availability(provider, name):
     time.sleep(5)
     return random.choice(['HIGH', 'MEDIUM', 'LOW'])
