@@ -96,3 +96,21 @@ resource "aws_autoscaling_group" "portal" {
 
 }
 ############################################################################
+
+resource "aws_autoscaling_policy" "Portal" {
+  name                   = "portal_auto_scale_policy"
+  policy_type            = "TargetTrackingScaling"
+
+  target_tracking_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ALBRequestCountPerTarget"
+      resource_label         = "${aws_lb.portal_lb.arn_suffix}/${aws_lb_target_group.portal_target_group.arn_suffix}"
+    }
+
+    target_value = 40.0
+    disable_scale_in = true
+  }
+
+  autoscaling_group_name = "${aws_autoscaling_group.portal.name}"
+}
+############################################################################
