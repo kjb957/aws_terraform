@@ -33,7 +33,7 @@ def slow_process_to_calculate_availability(provider, name):
 @application.route('/hardware/')
 def hardware():
 
-    con = sql.connect(host="terraform-20190923125030142600000001.cyjqkacibnoo.us-east-1.rds.amazonaws.com", 
+    con = sql.connect(host="mysqldb.myprivatedomain.com", 
         user="admin", passwd="My_db_Password",
         database="hardwareavailability")
 
