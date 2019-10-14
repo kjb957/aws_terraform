@@ -1,9 +1,11 @@
 from flask import Flask, request
 import requests
 import socket
+import datetime
 application = Flask(__name__)
 
 version = 'v 1.1 '
+date_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + '   '
 
 @application.route('/')
 def dashboard():
@@ -14,7 +16,7 @@ def dashboard():
         for r in result
     ]
 
-    return version + socket.gethostname() + '<br>' + '<br>'.join(hardware)
+    return date_str + version + socket.gethostname() + '<br>' + '<br>'.join(hardware)
 
 @application.route('/test/')
 def test():
