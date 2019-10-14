@@ -8,8 +8,8 @@ version = 'v 1.1 -  '
 
 def info_str():
 
-	date_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + '  -  '
-	retrurn date_str + version + socket.gethostname()
+    date_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + '  -  '
+    return date_str + version + socket.gethostname()
 
 @application.route('/')
 def dashboard():
