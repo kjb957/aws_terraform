@@ -4,8 +4,12 @@ import socket
 import datetime
 application = Flask(__name__)
 
-version = 'v 1.1 '
-date_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + '   '
+version = 'v 1.1 -  '
+
+def info_str():
+
+	date_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + '  -  '
+	retrurn date_str + version + socket.gethostname()
 
 @application.route('/')
 def dashboard():
@@ -16,7 +20,7 @@ def dashboard():
         for r in result
     ]
 
-    return date_str + version + socket.gethostname() + '<br>' + '<br>'.join(hardware)
+    return info_str() + '<br>' + '<br>'.join(hardware)
 
 @application.route('/test/')
 def test():
