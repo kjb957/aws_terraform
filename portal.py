@@ -14,7 +14,7 @@ def info_str():
 @application.route('/')
 def dashboard():
 
-    result = requests.get('http://192.168.21.20:5001/hardware/').json()
+    result = requests.get('http://ec2_hardware.myprivatedomain.com:5001/hardware/').json()
     hardware = [
         '{} - {}: {}'.format(r['provider'], r['name'], r['availability'])
         for r in result

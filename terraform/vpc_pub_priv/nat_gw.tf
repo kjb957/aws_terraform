@@ -17,7 +17,7 @@ resource "aws_route_table" "default_private_route_1" {
   vpc_id = "${aws_vpc.infrastructure_vpc.id}"
 
   route {
-    cidr_block = "0.0.0.0/0"
+    cidr_block = "${var.vpc_default_route}"
     gateway_id = "${aws_nat_gateway.nat_gw_1.id}"
   }
 

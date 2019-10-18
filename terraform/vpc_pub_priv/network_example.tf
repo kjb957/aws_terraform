@@ -1,22 +1,4 @@
-provider "aws" {
-  region     = "us-east-1"
-}
 
-#resource "aws_key_pair" "private_server_key_pair" {
-#  key_name   = "private_server_key_pair"
-#  public_key = "${file("my_default.pub")}"
-#}
-
-############################################################################
-resource "aws_vpc" "infrastructure_vpc" {
-  cidr_block = "192.168.0.0/16"
-  enable_dns_support = "true"
-  enable_dns_hostnames = "true"
-
-  tags = {
-    Name = "Infrastructure VPC"
-  }
-}
 
 # Declare the data source
 data "aws_availability_zones" "available" {
@@ -25,7 +7,7 @@ data "aws_availability_zones" "available" {
 
 resource "aws_subnet" "public_subnet_1" {
   vpc_id     = "${aws_vpc.infrastructure_vpc.id}"
-  cidr_block = "192.168.11.0/24"
+  cidr_block = "${var.vpc_subnets["public_subnet_1"]}"
   map_public_ip_on_launch = "true"
   availability_zone = "${data.aws_availability_zones.available.names[0]}"
 
@@ -36,7 +18,7 @@ resource "aws_subnet" "public_subnet_1" {
 
 resource "aws_subnet" "public_subnet_2" {
   vpc_id     = "${aws_vpc.infrastructure_vpc.id}"
-  cidr_block = "192.168.12.0/24"
+  cidr_block = "${var.vpc_subnets["public_subnet_2"]}"
   map_public_ip_on_launch = "true"
   availability_zone = "${data.aws_availability_zones.available.names[1]}"
 
@@ -47,7 +29,7 @@ resource "aws_subnet" "public_subnet_2" {
 
 resource "aws_subnet" "private_subnet_1" {
   vpc_id     = "${aws_vpc.infrastructure_vpc.id}"
-  cidr_block = "192.168.21.0/24"
+  cidr_block = "${var.vpc_subnets["private_subnet_1"]}"
   availability_zone = "${data.aws_availability_zones.available.names[0]}"
 
   tags = {
@@ -57,7 +39,7 @@ resource "aws_subnet" "private_subnet_1" {
 
 resource "aws_subnet" "private_subnet_2" {
   vpc_id     = "${aws_vpc.infrastructure_vpc.id}"
-  cidr_block = "192.168.22.0/24"
+  cidr_block = "${var.vpc_subnets["private_subnet_2"]}"
   availability_zone = "${data.aws_availability_zones.available.names[1]}"
   tags = {
     Name = "Private Subnet2"
@@ -77,7 +59,7 @@ resource "aws_route_table" "default_public_route" {
   vpc_id = "${aws_vpc.infrastructure_vpc.id}"
 
   route {
-    cidr_block = "0.0.0.0/0"
+    cidr_block = "${var.vpc_default_route}"
     gateway_id = "${aws_internet_gateway.internet_gateway.id}"
   }
 

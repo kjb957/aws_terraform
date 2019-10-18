@@ -12,7 +12,7 @@ resource "aws_security_group" "rds_mysql_security_group" {
     protocol    = "tcp"
     # Please restrict your ingress to only necessary IPs and ports.
     # Opening to 0.0.0.0/0 can lead to security vulnerabilities.
-    cidr_blocks = ["192.168.0.0/16"]
+    cidr_blocks = ["${var.vpc_cidr_block}"]
   }
   ingress {
     description = "Allow Port 3306"
@@ -21,7 +21,7 @@ resource "aws_security_group" "rds_mysql_security_group" {
     protocol    = "tcp"
     # Please restrict your ingress to only necessary IPs and ports.
     # Opening to 0.0.0.0/0 can lead to security vulnerabilities.
-    cidr_blocks = ["192.168.0.0/16"]
+    cidr_blocks = ["${var.vpc_cidr_block}"]
   }
 
 
@@ -29,7 +29,7 @@ resource "aws_security_group" "rds_mysql_security_group" {
     from_port       = 0
     to_port         = 0
     protocol        = "-1"
-    cidr_blocks     = ["0.0.0.0/0"]
+    cidr_blocks     = ["${var.vpc_default_route}"]
   }
 
   tags = {
@@ -53,9 +53,9 @@ resource "aws_db_instance" "mysql_db" {
   engine               = "mysql"
   engine_version       = "5.7"
   instance_class       = "db.t2.micro"
-  name                 = "hardwareavailability"
-  username             = "admin"
-  password             = "My_db_Password"
+  name                 = "${var.db_database}"
+  username             = "${var.db_admin_username}"
+  password             = "${var.db_admin_password}"
   parameter_group_name = "default.mysql5.7"
   deletion_protection  = "false"
   db_subnet_group_name = "${aws_db_subnet_group.rds_mysql.id}"

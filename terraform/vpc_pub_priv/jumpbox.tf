@@ -12,14 +12,14 @@ resource "aws_security_group" "public_jumbox" {
     protocol    = "tcp"
     # Please restrict your ingress to only necessary IPs and ports.
     # Opening to 0.0.0.0/0 can lead to security vulnerabilities.
-    cidr_blocks = ["71.245.226.55/32"]
+    cidr_blocks = ["${var.my_ip_address}"]
   }
 
   egress {
     from_port       = 0
     to_port         = 0
     protocol        = "-1"
-    cidr_blocks     = ["0.0.0.0/0"]
+    cidr_blocks     = ["${var.vpc_default_route}"]
   }
 
   tags = {
@@ -29,10 +29,10 @@ resource "aws_security_group" "public_jumbox" {
 
 ############################################################################
 resource "aws_instance" "jumpbox" {
-  #ami           = "ami-0c46f9f09e3a8c2b5"
-  ami            = "ami-00eb20669e0990cb4"
-  instance_type = "t2.micro"
-  key_name = "my_default_key_pair"
+  ami           = "${var.ami_id}"
+  #ami            = "ami-00eb20669e0990cb4"
+  instance_type = "${var.ec2_instance_type}"
+  key_name      = "${var.ec2_key}"
   vpc_security_group_ids = ["${aws_security_group.public_jumbox.id}"]
   subnet_id = "${aws_subnet.public_subnet_1.id}"
   user_data = "${file("provision_jumpbox.sh")}"

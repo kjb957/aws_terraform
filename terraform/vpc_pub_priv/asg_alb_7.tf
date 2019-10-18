@@ -20,6 +20,9 @@ resource "aws_lb_target_group" "portal_target_group" {
 
 
 ############################################################################
+output "portal_lb_dns_name" {
+  value = aws_lb.portal_lb.dns_name
+}
 ############################################################################
 resource "aws_lb" "portal_lb" {
   name               = "Portal-LB"
@@ -65,9 +68,9 @@ resource "aws_lb_listener_rule" "static" {
 ############################################################################
 resource "aws_launch_configuration" "portal_launch_config" {
   name_prefix          = "portal_launch_config-"
-  image_id      = "ami-00eb20669e0990cb4"
-  instance_type = "t2.micro"
-  key_name = "my_default_key_pair"
+  image_id      = "${var.ami_id}"
+  instance_type = "${var.ec2_instance_type}"
+  key_name      = "${var.ec2_key}"
   user_data = "${file("provision_portal.sh")}"
   security_groups = ["${aws_security_group.public_sg.id}"]
   enable_monitoring = "false"

@@ -15,7 +15,7 @@ resource "aws_security_group" "public_sg" {
     protocol    = "tcp"
     # Please restrict your ingress to only necessary IPs and ports.
     # Opening to 0.0.0.0/0 can lead to security vulnerabilities.
-    cidr_blocks = ["71.245.226.55/32", "192.168.0.0/16"]
+    cidr_blocks = ["${var.my_ip_address}", "${var.vpc_cidr_block}"]
   }
   ingress {
     description = "Allow Port 5000"
@@ -24,7 +24,7 @@ resource "aws_security_group" "public_sg" {
     protocol    = "tcp"
     # Please restrict your ingress to only necessary IPs and ports.
     # Opening to 0.0.0.0/0 can lead to security vulnerabilities.
-    cidr_blocks = ["71.245.226.55/32", "192.168.0.0/16"]
+    cidr_blocks = ["${var.my_ip_address}", "${var.vpc_cidr_block}"]
   }
 
 
@@ -32,7 +32,7 @@ resource "aws_security_group" "public_sg" {
     from_port       = 0
     to_port         = 0
     protocol        = "-1"
-    cidr_blocks     = ["0.0.0.0/0"]
+    cidr_blocks     = ["${var.vpc_default_route}"]
   }
 
 }
@@ -53,7 +53,7 @@ resource "aws_security_group" "private_sg" {
     protocol    = "tcp"
     # Please restrict your ingress to only necessary IPs and ports.
     # Opening to 0.0.0.0/0 can lead to security vulnerabilities.
-    cidr_blocks = ["192.168.0.0/16"]
+    cidr_blocks = ["${var.vpc_cidr_block}"]
   }
   ingress {
     description = "Allow Port 5000"
@@ -62,7 +62,7 @@ resource "aws_security_group" "private_sg" {
     protocol    = "tcp"
     # Please restrict your ingress to only necessary IPs and ports.
     # Opening to 0.0.0.0/0 can lead to security vulnerabilities.
-    cidr_blocks = ["192.168.0.0/16"]
+    cidr_blocks = ["${var.vpc_cidr_block}"]
   }
 
 
@@ -70,7 +70,7 @@ resource "aws_security_group" "private_sg" {
     from_port       = 0
     to_port         = 0
     protocol        = "-1"
-    cidr_blocks     = ["0.0.0.0/0"]
+    cidr_blocks     = ["${var.vpc_default_route}"]
   }
 }
 
@@ -89,7 +89,7 @@ resource "aws_security_group" "public_elb_sg" {
     protocol    = "tcp"
     # Please restrict your ingress to only necessary IPs and ports.
     # Opening to 0.0.0.0/0 can lead to security vulnerabilities.
-    cidr_blocks = ["71.245.226.55/32"]
+    cidr_blocks = ["${var.my_ip_address}"]
   }
 
 
@@ -97,7 +97,7 @@ resource "aws_security_group" "public_elb_sg" {
     from_port       = 0
     to_port         = 0
     protocol        = "-1"
-    cidr_blocks     = ["0.0.0.0/0"]
+    cidr_blocks     = ["${var.vpc_default_route}"]
   }
 
   tags = {
