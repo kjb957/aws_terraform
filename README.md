@@ -23,13 +23,13 @@ Included are Terraform files that are used to provision the sample app consistin
 * Hardware app is a single instance but could also in practice be part of a Auto Scaling Group and be fronted with an internal LB.  This was omitted for this exercise since it would be the same setup as for Portal.
 * The portal app once fronted by a LB could be hosted in a private network.
 * In Security Groups could define source as being other security group object.  Currently using VPC subnet.
-* Scaling Policy bug within Terraform for setting ALBRequestCountPerTarget.
 * Use Elasticache for solving slow hardware response time, see example of using Redis as a cache below.
 * A /test/ route was added to the portal app for manual testing and also as a keep alive health check for the LB.
 * A similar route can be added to the hardware app that will send a response for a keep alive health check if fronted by an LB.
 
 ### Software Installation
 * Each ec2 instance installs and runs software as part of a user data script.  These are the provision_\*.sh scripts. The repo containing the app code is pulled from GitHub.
+* Code Deploy could be used in a real example
 * Upgrades are accomplished by pushing new code to the git repo and causing a new instance to be provisioned. With the auto scaling group this can be accomplished by increasing then decreasing the desired capacity. The policy will terminate the newest.
 
 Changing the desired capacity in the Auto Scale Group can be accomplished with the following AWS CLI commands
