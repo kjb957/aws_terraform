@@ -48,8 +48,6 @@ The environment is deployed with Terraform.  The commands to run are as follows.
 
 Note that the commands applies to the files and code therein in the folder and represent a state.  Removing them from the directory will result in any objects that were created, be destroyed if we run terraform apply and the files are no longer present. 
 
-
-```
 #### Setting up the MySQL DB
 ```
 # Connect
